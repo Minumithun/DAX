@@ -3,718 +3,1820 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Power BI Mastery Quest - Interactive Learning Game</title>
+    <title>DAX Mastery Quest - Interactive Learning Game</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-    <div class="game-container">
+    <div id="app">
         <!-- Header -->
         <header class="header">
-            <div class="header-content">
-                <div class="logo">
-                    <h1>🎮 Power BI Mastery Quest</h1>
-                    <p>Interactive Dashboard Learning Game</p>
-                </div>
-                <div class="stats">
-                    <div class="stat-item">
-                        <i class="fas fa-star"></i>
-                        <span id="points">0</span> Points
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">
+                        <h1>🧮 DAX Mastery Quest</h1>
+                        <p>Interactive DAX Learning Adventure</p>
                     </div>
-                    <div class="stat-item">
-                        <i class="fas fa-trophy"></i>
-                        <span id="badges">0</span>/5 Badges
-                    </div>
-                    <div class="progress-container">
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="overall-progress"></div>
+                    <div class="player-info">
+                        <input type="text" id="playerName" placeholder="Enter your name for certificate" class="name-input">
+                        <div class="stats">
+                            <div class="stat">
+                                <i class="fas fa-code"></i>
+                                <span id="totalLines">0</span> Lines Coded
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-star"></i>
+                                <span id="totalPoints">0</span> Points
+                            </div>
+                            <div class="stat">
+                                <i class="fas fa-trophy"></i>
+                                <span id="badgeCount">0</span>/6 Badges
+                            </div>
                         </div>
-                        <span id="progress-text">0% Complete</span>
+                        <div class="progress-section">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="overallProgress"></div>
+                            </div>
+                            <span id="progressText">0% Complete</span>
+                        </div>
+                        <div class="header-buttons">
+                            <button id="resetBtn" class="btn btn-reset">
+                                <i class="fas fa-redo"></i> Reset Quest
+                            </button>
+                            <button id="certificateBtn" class="btn btn-certificate" style="display: none;">
+                                <i class="fas fa-certificate"></i> Get Certificate
+                            </button>
+                        </div>
                     </div>
-                    <button id="reset-btn" class="reset-button">
-                        <i class="fas fa-redo"></i> Reset Game
-                    </button>
                 </div>
             </div>
         </header>
 
         <!-- Navigation -->
         <nav class="navigation">
-            <button class="nav-tab active" data-module="overview">🏠 Overview</button>
-            <button class="nav-tab" data-module="data-connection">🔗 Data Connection</button>
-            <button class="nav-tab" data-module="visualizations">📊 Visualizations</button>
-            <button class="nav-tab" data-module="formatting">🎨 Formatting</button>
-            <button class="nav-tab" data-module="interactivity">⚡ Interactivity</button>
-            <button class="nav-tab" data-module="publishing">🚀 Publishing</button>
+            <div class="container">
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-module="overview">
+                        <i class="fas fa-home"></i> Overview
+                    </button>
+                    <button class="nav-tab" data-module="basics">
+                        <i class="fas fa-play-circle"></i> DAX Basics
+                    </button>
+                    <button class="nav-tab" data-module="aggregation">
+                        <i class="fas fa-calculator"></i> Aggregation
+                    </button>
+                    <button class="nav-tab" data-module="filtering">
+                        <i class="fas fa-filter"></i> Filtering
+                    </button>
+                    <button class="nav-tab" data-module="time-intelligence">
+                        <i class="fas fa-clock"></i> Time Intelligence
+                    </button>
+                    <button class="nav-tab" data-module="relationships">
+                        <i class="fas fa-project-diagram"></i> Relationships
+                    </button>
+                    <button class="nav-tab" data-module="advanced">
+                        <i class="fas fa-rocket"></i> Advanced DAX
+                    </button>
+                </div>
+            </div>
         </nav>
 
-        <!-- Badge System -->
-        <div class="badges-section">
-            <div class="badge locked" id="badge-data">
-                <div class="badge-icon">🔗</div>
-                <div class="badge-name">Data Master</div>
+        <!-- Badges Section -->
+        <section class="badges-section">
+            <div class="container">
+                <div class="badges-grid">
+                    <div class="badge locked" id="badge-basics">
+                        <div class="badge-icon">📚</div>
+                        <div class="badge-name">DAX Apprentice</div>
+                    </div>
+                    <div class="badge locked" id="badge-aggregation">
+                        <div class="badge-icon">🧮</div>
+                        <div class="badge-name">Calculation Master</div>
+                    </div>
+                    <div class="badge locked" id="badge-filtering">
+                        <div class="badge-icon">🔍</div>
+                        <div class="badge-name">Filter Ninja</div>
+                    </div>
+                    <div class="badge locked" id="badge-time">
+                        <div class="badge-icon">⏰</div>
+                        <div class="badge-name">Time Wizard</div>
+                    </div>
+                    <div class="badge locked" id="badge-relationships">
+                        <div class="badge-icon">🔗</div>
+                        <div class="badge-name">Relationship Expert</div>
+                    </div>
+                    <div class="badge locked" id="badge-advanced">
+                        <div class="badge-icon">🚀</div>
+                        <div class="badge-name">DAX Grandmaster</div>
+                    </div>
+                </div>
             </div>
-            <div class="badge locked" id="badge-visual">
-                <div class="badge-icon">📊</div>
-                <div class="badge-name">Visual Expert</div>
-            </div>
-            <div class="badge locked" id="badge-design">
-                <div class="badge-icon">🎨</div>
-                <div class="badge-name">Design Guru</div>
-            </div>
-            <div class="badge locked" id="badge-interactive">
-                <div class="badge-icon">⚡</div>
-                <div class="badge-name">Interactive Pro</div>
-            </div>
-            <div class="badge locked" id="badge-publisher">
-                <div class="badge-icon">🚀</div>
-                <div class="badge-name">Publishing Hero</div>
-            </div>
-        </div>
+        </section>
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Overview Module -->
-            <section id="overview" class="module active">
-                <div class="module-header">
-                    <h2>🎯 Welcome to Power BI Mastery Quest!</h2>
-                    <p>Learn to create professional dashboards step by step</p>
-                </div>
-
-                <div class="welcome-card">
-                    <div class="features-grid">
-                        <div class="feature">
-                            <i class="fas fa-database"></i>
-                            <h3>Data Connection</h3>
-                            <p>Learn to connect and import data from various sources</p>
-                        </div>
-                        <div class="feature">
-                            <i class="fas fa-chart-line"></i>
-                            <h3>Visualizations</h3>
-                            <p>Create stunning charts, graphs, and visual elements</p>
-                        </div>
-                        <div class="feature">
-                            <i class="fas fa-palette"></i>
-                            <h3>Formatting</h3>
-                            <p>Design professional-looking dashboards with proper styling</p>
-                        </div>
-                        <div class="feature">
-                            <i class="fas fa-mouse-pointer"></i>
-                            <h3>Interactivity</h3>
-                            <p>Add filters, slicers, and interactive elements</p>
-                        </div>
+            <div class="container">
+                <!-- Overview Module -->
+                <section id="overview" class="module active">
+                    <div class="module-header">
+                        <h2>🎯 Welcome to DAX Mastery Quest!</h2>
+                        <p>Master Data Analysis Expressions through hands-on coding challenges</p>
                     </div>
 
-                    <div class="download-section">
-                        <h3>📥 Download Sample Data</h3>
-                        <p>Get started with our sample HR recruitment dataset:</p>
-                        <div class="download-links">
-                            <a href="sample-data.csv" download class="download-btn">
-                                <i class="fas fa-download"></i>
-                                Sample HR Data
-                            </a>
-                            <a href="recruitment-metrics.csv" download class="download-btn">
-                                <i class="fas fa-download"></i>
-                                Recruitment Metrics
-                            </a>
+                    <div class="content-grid">
+                        <div class="welcome-card">
+                            <h3>🌟 What You'll Master</h3>
+                            <div class="features-grid">
+                                <div class="feature">
+                                    <i class="fas fa-code"></i>
+                                    <h4>DAX Fundamentals</h4>
+                                    <p>Learn syntax, functions, and basic expressions</p>
+                                </div>
+                                <div class="feature">
+                                    <i class="fas fa-calculator"></i>
+                                    <h4>Aggregation Functions</h4>
+                                    <p>SUM, AVERAGE, COUNT, and more</p>
+                                </div>
+                                <div class="feature">
+                                    <i class="fas fa-filter"></i>
+                                    <h4>Filtering & Context</h4>
+                                    <p>CALCULATE, FILTER, ALL functions</p>
+                                </div>
+                                <div class="feature">
+                                    <i class="fas fa-clock"></i>
+                                    <h4>Time Intelligence</h4>
+                                    <p>YTD, MTD, Previous Year calculations</p>
+                                </div>
+                                <div class="feature">
+                                    <i class="fas fa-project-diagram"></i>
+                                    <h4>Table Relationships</h4>
+                                    <p>RELATED, RELATEDTABLE functions</p>
+                                </div>
+                                <div class="feature">
+                                    <i class="fas fa-rocket"></i>
+                                    <h4>Advanced Patterns</h4>
+                                    <p>Complex calculations and optimization</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="getting-started">
-                        <h3>🚀 Ready to Start?</h3>
-                        <p>Choose any module to begin your Power BI journey. You can complete them in any order!</p>
-                        <div class="start-buttons">
-                            <button class="start-btn" onclick="showModule('data-connection')">
-                                Start with Data Connection
-                            </button>
-                            <button class="start-btn secondary" onclick="showModule('visualizations')">
-                                Jump to Visualizations
-                            </button>
+                        <div class="download-card">
+                            <h3>📁 Sample Data Files</h3>
+                            <p>Download these Power BI files to follow along:</p>
+                            <div class="download-links">
+                                <a href="data/HR-Analytics-Sample.pbix" download class="download-btn">
+                                    <i class="fas fa-download"></i>
+                                    HR Analytics Sample
+                                </a>
+                                <a href="data/Sales-Sample.pbix" download class="download-btn">
+                                    <i class="fas fa-download"></i>
+                                    Sales Sample Data
+                                </a>
+                                <a href="data/DAX-Practice-Dataset.xlsx" download class="download-btn">
+                                    <i class="fas fa-download"></i>
+                                    Practice Dataset
+                                </a>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="prerequisites">
-                        <h3>✅ Prerequisites</h3>
-                        <ul>
-                            <li>Power BI Desktop installed</li>
-                            <li>Sample data files downloaded</li>
-                            <li>Keep this browser tab open alongside Power BI</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
+                        <div class="getting-started-card">
+                            <h3>🚀 Ready to Code?</h3>
+                            <p>Choose any module to start your DAX journey. No restrictions - learn at your own pace!</p>
+                            <div class="start-buttons">
+                                <button class="btn btn-primary" onclick="switchModule('basics')">
+                                    Start with DAX Basics
+                                </button>
+                                <button class="btn btn-secondary" onclick="switchModule('aggregation')">
+                                    Jump to Aggregation
+                                </button>
+                            </div>
+                            <div class="prerequisites">
+                                <h4>✅ Prerequisites:</h4>
+                                <ul>
+                                    <li>Power BI Desktop installed</li>
+                                    <li>Basic understanding of data concepts</li>
+                                    <li>Sample files downloaded</li>
+                                    <li>Keep Power BI open alongside this browser</li>
+                                    <li>Enter your name above for the certificate</li>
+                                </ul>
+                            </div>
+                        </div>
 
-            <!-- Data Connection Module -->
-            <section id="data-connection" class="module">
-                <div class="module-header">
-                    <h2>🔗 Data Connection Mastery</h2>
-                    <p>Learn to connect and import data sources</p>
-                    <div class="module-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="data-progress"></div>
-                        </div>
-                        <span id="data-status">0/4 Steps</span>
-                    </div>
-                </div>
-
-                <div class="steps-container">
-                    <div class="step" data-step="1" data-module="data">
-                        <div class="step-header">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <h3>Open Power BI Desktop</h3>
-                                <p>Launch Power BI Desktop and start a new project</p>
-                            </div>
-                            <button class="complete-btn" onclick="completeStep(this)">
-                                Complete (+25 pts)
-                            </button>
-                        </div>
-                        <div class="step-details">
-                            <div class="instruction">
-                                <h4>📋 Instructions:</h4>
-                                <ol>
-                                    <li>Open Power BI Desktop on your computer</li>
-                                    <li>If prompted, select "Get data" or create a blank report</li>
-                                    <li>You should see the main Power BI interface with ribbon menu</li>
-                                </ol>
-                            </div>
-                            <div class="tip">
-                                <i class="fas fa-lightbulb"></i>
-                                <strong>Tip:</strong> Make sure you have the latest version of Power BI Desktop for the best experience.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="step" data-step="2" data-module="data">
-                        <div class="step-header">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <h3>Import CSV Data</h3>
-                                <p>Connect to your downloaded sample data file</p>
-                            </div>
-                            <button class="complete-btn" onclick="completeStep(this)">
-                                Complete (+25 pts)
-                            </button>
-                        </div>
-                        <div class="step-details">
-                            <div class="instruction">
-                                <h4>📋 Instructions:</h4>
-                                <ol>
-                                    <li>Click "Get Data" in the Home ribbon</li>
-                                    <li>Select "Text/CSV" from the list</li>
-                                    <li>Browse and select your downloaded "sample-data.csv" file</li>
-                                    <li>Preview the data and click "Load"</li>
-                                </ol>
-                            </div>
-                            <div class="expected-result">
-                                <i class="fas fa-check-circle"></i>
-                                <strong>Expected Result:</strong> You should see your data table appear in the Fields panel on the right.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="step" data-step="3" data-module="data">
-                        <div class="step-header">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <h3>Add Second Data Source</h3>
-                                <p>Import the recruitment metrics data</p>
-                            </div>
-                            <button class="complete-btn" onclick="completeStep(this)">
-                                Complete (+25 pts)
-                            </button>
-                        </div>
-                        <div class="step-details">
-                            <div class="instruction">
-                                <h4>📋 Instructions:</h4>
-                                <ol>
-                                    <li>Click "Get Data" again</li>
-                                    <li>Select "Text/CSV"</li>
-                                    <li>Choose "recruitment-metrics.csv"</li>
-                                    <li>Load the data</li>
-                                </ol>
-                            </div>
-                            <div class="challenge">
-                                <i class="fas fa-star"></i>
-                                <strong>Challenge:</strong> Can you identify the relationship between the two datasets?
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="step" data-step="4" data-module="data">
-                        <div class="step-header">
-                            <div class="step-number">4</div>
-                            <div class="step-content">
-                                <h3>Verify Data Import</h3>
-                                <p>Check that all data is properly loaded</p>
-                            </div>
-                            <button class="complete-btn" onclick="completeStep(this)">
-                                Complete (+25 pts)
-                            </button>
-                        </div>
-                        <div class="step-details">
-                            <div class="instruction">
-                                <h4>📋 Instructions:</h4>
-                                <ol>
-                                    <li>Look at the Fields panel on the right</li>
-                                    <li>Verify you see both data tables</li>
-                                    <li>Expand each table to see the columns</li>
-                                    <li>Check data types and column names</li>
-                                </ol>
-                            </div>
-                            <div class="success-message" style="display: none;">
-                                <i class="fas fa-trophy"></i>
-                                <strong>Congratulations!</strong> You've mastered data connection and earned the Data Master badge!
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Visualizations Module -->
-            <section id="visualizations" class="module">
-                <div class="module-header">
-                    <h2>📊 Visualization Mastery</h2>
-                    <p>Create stunning charts and visual elements</p>
-                    <div class="module-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="visual-progress"></div>
-                        </div>
-                        <span id="visual-status">0/5 Steps</span>
-                    </div>
-                </div>
-
-                <div class="steps-container">
-                    <div class="step" data-step="1" data-module="visual">
-                        <div class="step-header">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <h3>Create a Column Chart</h3>
-                                <p>Build your first visualization</p>
-                            </div>
-                            <button class="complete-btn" onclick="completeStep(this)">
-                                Complete (+50 pts)
-                            </button>
-                        </div>
-                        <div class="step-details">
-                            <div class="instruction">
-                                <h4>📋 Instructions:</h4>
-                                <ol>
-                                    <li>Select "Clustered Column Chart" from visualizations panel</li>
-                                    <li>Drag "Department" to Axis</li>
-                                    <li>Drag "Employee Count" to Values</li>
-                                    <li>Observe the chart creation</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="step" data-step="2" data-module="visual">
-                        <div class="step-header">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <h3>Add a Pie Chart</h3>
-                                <p>Show data distribution with pie chart</p>
-                            </div>
-                            <button class="complete-btn" onclick="completeStep(this)">
-                                Complete (+50 pts)
-                            </button>
-                        </div>
-                        <div class="step-details">
-                            <div class="instruction">
-                                <h4>📋 Instructions:</h4>
-                                <ol>
-                                    <li>Click empty space in report canvas</li>
-                                    <li>Select "Pie Chart" from visualizations</li>
-                                    <li>Add "Gender" to Legend</li>
-                                    <li>Add "Employee Count" to Values</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="step" data-step="3" data-module="visual">
-                        <div class="step-header">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <h3>Create KPI Cards</h3>
-                                <p>Display key metrics prominently</p>
-                            </div>
-                            <button class="complete-btn" onclick="completeStep(this)">
-                                Complete (+50 pts)
-                            </button>
-                        </div>
-                        <div class="step-details">
-                            <div class="instruction">
-                                <h4>📋 Instructions:</h4>
-                                <ol>
-                                    <li>Select "Card" visualization</li>
-                                    <li>Add "Total Employees" to Fields</li>
-                                    <li>Create another card for "Average Salary"</li>
-                                    <li>Position cards at the top of your report</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="step" data-step="4" data-module="visual">
-                        <div class="step-header">
-                            <div class="step-number">4</div>
-                            <div class="step-content">
-                                <h3>Add a Line Chart</h3>
-                                <p>Show trends over time</p>
-                            </div>
-                            <button class="complete-btn" onclick="completeStep(this)">
-                                Complete (+50 pts)
-                            </button>
-                        </div>
-                        <div class="step-details">
-                            <div class="instruction">
-                                <h4>📋 Instructions:</h4>
-                                <ol>
-                                    <li>Select "Line Chart" from visualizations</li>
-                                    <li>Add "Date" to Axis</li>
-                                    <li>Add "Recruitment Count" to Values</li>
-                                    <li>Observe the trend line</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="step" data-step="5" data-module="visual">
-                        <div class="step-header">
-                            <div class="step-number">5</div>
-                            <div class="step-content">
-                                <h3>Create a Data Table</h3>
-                                <p>Display detailed information in tabular format</p>
-                            </div>
-                            <button class="complete-btn" onclick="completeStep(this)">
-                                Complete (+50 pts)
-                            </button>
-                        </div>
-                        <div class="step-details">
-                            <div class="instruction">
-                                <h4>📋 Instructions:</h4>
-                                <ol>
-                                    <li>Select "Table" visualization</li>
-                                    <li>Add "Employee Name", "Department", "Salary" to Values</li>
-                                    <li>Resize the table appropriately</li>
-                                    <li>Check data formatting</li>
-                                </ol>
-                            </div>
-                            <div class="success-message" style="display: none;">
-                                <i class="fas fa-trophy"></i>
-                                <strong>Amazing!</strong> You've earned the Visual Expert badge!
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Formatting Module -->
-            <section id="formatting" class="module">
-                <div class="module-header">
-                    <h2>🎨 Design & Formatting Mastery</h2>
-                    <p>Make your dashboard look professional</p>
-                    <div class="module-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="format-progress"></div>
-                        </div>
-                        <span id="format-status">0/4 Steps</span>
-                    </div>
-                </div>
-
-                <div class="steps-container">
-                    <div class="step" data-step="1" data-module="format">
-                        <div class="step-header">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <h3>Apply Color Theme</h3>
-                                <p>Choose consistent colors for your dashboard</p>
-                            </div>
-                            <button class="complete-btn" onclick="completeStep(this)">
-                                Complete (+30 pts)
-                            </button>
-                        </div>
-                        <div class="step-details">
-                            <div class="instruction">
-                                <h4>📋 Instructions:</h4>
-                                <ol>
-                                    <li>Select a visual (click on it)</li>
-                                    <li>Go to Format pane (paint roller icon)</li>
-                                    <li>Expand "Data colors"</li>
-                                    <li>Choose a consistent color scheme</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="step" data-step="2" data-module="format">
-                        <div class="step-header">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <h3>Add Titles and Labels</h3>
-                                <p>Make your visuals clear and informative</p>
-                            </div>
-                            <button class="complete-btn" onclick="completeStep(this)">
-                                Complete (+30 pts)
-                            </button>
-                        </div>
-                        <div class="step-details">
-                            <div class="instruction">
-                                <h4>📋 Instructions:</h4>
-                                <ol>
-                                    <li>Select each visual</li>
-                                    <li>In Format pane, turn on "Title"</li>
-                                    <li>Edit title text to be descriptive</li>
-                                    <li>Adjust font size and color</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="step" data-step="3" data-module="format">
-                        <div class="step-header">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <h3>Arrange Layout</h3>
-                                <p>Organize visuals in a logical layout</p>
-                            </div>
-                            <button class="complete-btn" onclick="completeStep(this)">
-                                Complete (+30 pts)
-                            </button>
-                        </div>
-                        <div class="step-details">
-                            <div class="instruction">
-                                <h4>📋 Instructions:</h4>
-                                <ol>
-                                    <li>Drag and resize visuals</li>
-                                    <li>Place KPI cards at the top</li>
-                                    <li>Arrange charts in a grid below</li>
-                                    <li>Leave appropriate spacing</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="step" data-step="4" data-module="format">
-                        <div class="step-header">
-                            <div class="step-number">4</div>
-                            <div class="step-content">
-                                <h3>Final Polish</h3>
-                                <p>Add background and finishing touches</p>
-                            </div>
-                            <button class="complete-btn" onclick="completeStep(this)">
-                                Complete (+30 pts)
-                            </button>
-                        </div>
-                        <div class="step-details">
-                            <div class="instruction">
-                                <h4>📋 Instructions:</h4>
-                                <ol>
-                                    <li>Click empty space in report</li>
-                                    <li>Format pane → Page background</li>
-                                    <li>Choose subtle background color</li>
-                                    <li>Ensure all text is readable</li>
-                                </ol>
-                            </div>
-                            <div class="success-message" style="display: none;">
-                                <i class="fas fa-trophy"></i>
-                                <strong>Excellent!</strong> You've earned the Design Guru badge!
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Interactivity Module -->
-            <section id="interactivity" class="module">
-                <div class="module-header">
-                    <h2>⚡ Interactivity Mastery</h2>
-                    <p>Add filters and interactive elements</p>
-                    <div class="module-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="interactive-progress"></div>
-                        </div>
-                        <span id="interactive-status">0/3 Steps</span>
-                    </div>
-                </div>
-
-                <div class="steps-container">
-                    <div class="step" data-step="1" data-module="interactive">
-                        <div class="step-header">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <h3>Add Department Slicer</h3>
-                                <p>Create an interactive filter</p>
-                            </div>
-                            <button class="complete-btn" onclick="completeStep(this)">
-                                Complete (+75 pts)
-                            </button>
-                        </div>
-                        <div class="step-details">
-                            <div class="instruction">
-                                <h4>📋 Instructions:</h4>
-                                <ol>
-                                    <li>Select "Slicer" from visualizations</li>
-                                    <li>Add "Department" to Field</li>
-                                    <li>Test the slicer by clicking different departments</li>
-                                    <li>Notice how other visuals update</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="step" data-step="2" data-module="interactive">
-                        <div class="step-header">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <h3>Add Date Range Filter</h3>
-                                <p>Create a time-based filter</p>
-                            </div>
-                            <button class="complete-btn" onclick="completeStep(this)">
-                                Complete (+75 pts)
-                            </button>
-                        </div>
-                        <div class="step-details">
-                            <div class="instruction">
-                                <h4>📋 Instructions:</h4>
-                                <ol>
-                                    <li>Add another "Slicer"</li>
-                                    <li>Add "Date" field</li>
-                                    <li>Format as date range slider</li>
-                                    <li>Test the date filtering</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="step" data-step="3" data-module="interactive">
-                        <div class="step-header">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <h3>Test Interactivity</h3>
-                                <p>Verify all interactive elements work together</p>
-                            </div>
-                            <button class="complete-btn" onclick="completeStep(this)">
-                                Complete (+75 pts)
-                            </button>
-                        </div>
-                        <div class="step-details">
-                            <div class="instruction">
-                                <h4>📋 Instructions:</h4>
-                                <ol>
-                                    <li>Try different department selections</li>
-                                    <li>Adjust the date range</li>
-                                    <li>Click on chart elements for cross-filtering</li>
-                                    <li>Verify all visuals update correctly</li>
-                                </ol>
-                            </div>
-                            <div class="success-message" style="display: none;">
-                                <i class="fas fa-trophy"></i>
-                                <strong>Outstanding!</strong> You've earned the Interactive Pro badge!
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Publishing Module -->
-            <section id="publishing" class="module">
-                <div class="module-header">
-                    <h2>🚀 Publishing Mastery</h2>
-                    <p>Save and share your dashboard</p>
-                    <div class="module-progress">
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="publish-progress"></div>
-                        </div>
-                        <span id="publish-status">0/3 Steps</span>
-                    </div>
-                </div>
-
-                <div class="steps-container">
-                    <div class="step" data-step="1" data-module="publish">
-                        <div class="step-header">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <h3>Save Your Work</h3>
-                                <p>Save the Power BI file</p>
-                            </div>
-                            <button class="complete-btn" onclick="completeStep(this)">
-                                Complete (+40 pts)
-                            </button>
-                        </div>
-                        <div class="step-details">
-                            <div class="instruction">
-                                <h4>📋 Instructions:</h4>
-                                <ol>
-                                    <li>Press Ctrl+S or File → Save</li>
-                                    <li>Choose a meaningful name</li>
-                                    <li>Select appropriate location</li>
-                                    <li>Click Save</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="step" data-step="2" data-module="publish">
-                        <div class="step-header">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <h3>Export Options</h3>
-                                <p>Learn different sharing methods</p>
-                            </div>
-                            <button class="complete-btn" onclick="completeStep(this)">
-                                Complete (+40 pts)
-                            </button>
-                        </div>
-                        <div class="step-details">
-                            <div class="instruction">
-                                <h4>📋 Instructions:</h4>
-                                <ol>
-                                    <li>Go to File → Export</li>
-                                    <li>Try "Export to PDF"</li>
-                                    <li>Try "Export to PowerPoint"</li>
-                                    <li>Note the different export options</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="step" data-step="3" data-module="publish">
-                        <div class="step-header">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <h3>Congratulations!</h3>
-                                <p>You've completed the Power BI Quest!</p>
-                            </div>
-                            <button class="complete-btn" onclick="completeStep(this)">
-                                Complete (+40 pts)
-                            </button>
-                        </div>
-                        <div class="step-details">
-                            <div class="final-celebration" style="display: none;">
-                                <div class="celebration-content">
-                                    <h3>🎉 QUEST COMPLETED! 🎉</h3>
-                                    <p>You've mastered Power BI dashboard creation!</p>
-                                    <div class="final-stats">
-                                        <div class="stat">
-                                            <i class="fas fa-trophy"></i>
-                                            <span>All Badges Earned!</span>
-                                        </div>
-                                        <div class="stat">
-                                            <i class="fas fa-star"></i>
-                                            <span id="final-points">0</span> Total Points
-                                        </div>
-                                    </div>
-                                    <p>🎯 You're now ready to create amazing dashboards for your recruitment team!</p>
+                        <div class="dax-cheatsheet-card">
+                            <h3>📖 Quick DAX Reference</h3>
+                            <div class="cheatsheet-grid">
+                                <div class="cheat-section">
+                                    <h5>Basic Syntax</h5>
+                                    <code>=</code> Start all formulas<br>
+                                    <code>[]</code> Column references<br>
+                                    <code>''</code> Table names with spaces
+                                </div>
+                                <div class="cheat-section">
+                                    <h5>Common Functions</h5>
+                                    <code>SUM()</code> Add values<br>
+                                    <code>CALCULATE()</code> Modify context<br>
+                                    <code>FILTER()</code> Filter tables
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+
+                <!-- DAX Basics Module -->
+                <section id="basics" class="module">
+                    <div class="module-header">
+                        <h2>📚 DAX Basics Mastery</h2>
+                        <p>Learn fundamental DAX syntax and simple calculations</p>
+                        <div class="module-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="basicsProgress"></div>
+                            </div>
+                            <span id="basicsStatus">0/5 Challenges Complete</span>
+                        </div>
+                    </div>
+
+                    <div class="challenges-container">
+                        <div class="challenge" data-challenge="1" data-module="basics">
+                            <div class="challenge-header">
+                                <div class="challenge-number">1</div>
+                                <div class="challenge-info">
+                                    <h3>Your First DAX Measure</h3>
+                                    <p>Create a simple SUM measure</p>
+                                </div>
+                                <div class="challenge-points">+50 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Create a measure called "Total Sales" that sums all sales values.</p>
+                                </div>
+                                
+                                <div class="instructions">
+                                    <h4>📋 Step-by-Step Instructions:</h4>
+                                    <ol>
+                                        <li>Open Power BI Desktop with your sample data</li>
+                                        <li>In the <strong>Fields</strong> panel, right-click on your Sales table</li>
+                                        <li>Select <strong>"New Measure"</strong></li>
+                                        <li>Copy and paste this DAX code:</li>
+                                    </ol>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">Total Sales = SUM(Sales[Sales Amount])</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>=</code> - Every DAX formula starts with equals</li>
+                                        <li><code>SUM()</code> - Aggregation function that adds up values</li>
+                                        <li><code>Sales[Sales Amount]</code> - References the Sales Amount column in Sales table</li>
+                                    </ul>
+                                </div>
+
+                                <div class="test-section">
+                                    <h5>✅ Test Your Code:</h5>
+                                    <p>Drag your new "Total Sales" measure to a card visual. You should see the total sum of all sales.</p>
+                                </div>
+
+                                <div class="tip-box">
+                                    <i class="fas fa-lightbulb"></i>
+                                    <strong>Pro Tip:</strong> Measure names appear in square brackets [] when referenced in other formulas.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="challenge" data-challenge="2" data-module="basics">
+                            <div class="challenge-header">
+                                <div class="challenge-number">2</div>
+                                <div class="challenge-info">
+                                    <h3>Calculate Average Values</h3>
+                                    <p>Create an AVERAGE measure</p>
+                                </div>
+                                <div class="challenge-points">+50 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Create a measure that calculates the average sales amount per transaction.</p>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">Average Sales = AVERAGE(Sales[Sales Amount])</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>AVERAGE()</code> - Calculates the arithmetic mean</li>
+                                        <li>Automatically ignores blank values</li>
+                                        <li>Returns the sum divided by count of non-blank values</li>
+                                    </ul>
+                                </div>
+
+                                <div class="practice-exercise">
+                                    <h5>🎮 Bonus Challenge:</h5>
+                                    <p>Try creating similar measures using:</p>
+                                    <ul>
+                                        <li><code>MIN(Sales[Sales Amount])</code> - Minimum value</li>
+                                        <li><code>MAX(Sales[Sales Amount])</code> - Maximum value</li>
+                                        <li><code>COUNT(Sales[Sales Amount])</code> - Count of values</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="challenge" data-challenge="3" data-module="basics">
+                            <div class="challenge-header">
+                                <div class="challenge-number">3</div>
+                                <div class="challenge-info">
+                                    <h3>Mathematical Operations</h3>
+                                    <p>Combine operations in DAX</p>
+                                </div>
+                                <div class="challenge-points">+75 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Create a measure that calculates profit margin percentage.</p>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">Profit Margin % = 
+DIVIDE(
+    SUM(Sales[Profit]),
+    SUM(Sales[Sales Amount])
+) * 100</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>DIVIDE()</code> - Safe division that handles division by zero</li>
+                                        <li>Multi-line format improves readability</li>
+                                        <li><code>* 100</code> - Converts decimal to percentage</li>
+                                        <li>Returns BLANK() instead of error when dividing by zero</li>
+                                    </ul>
+                                </div>
+
+                                <div class="warning-box">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <strong>Important:</strong> Always use DIVIDE() instead of / operator to avoid division by zero errors.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="challenge" data-challenge="4" data-module="basics">
+                            <div class="challenge-header">
+                                <div class="challenge-number">4</div>
+                                <div class="challenge-info">
+                                    <h3>Conditional Logic</h3>
+                                    <p>Use IF statement in DAX</p>
+                                </div>
+                                <div class="challenge-points">+75 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Create a measure that shows "High" if total sales > 1000000, otherwise "Low".</p>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">Sales Category = 
+IF(
+    SUM(Sales[Sales Amount]) > 1000000,
+    "High",
+    "Low"
+)</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>IF()</code> - Conditional logic function</li>
+                                        <li>First parameter: condition to test</li>
+                                        <li>Second parameter: value if TRUE</li>
+                                        <li>Third parameter: value if FALSE</li>
+                                    </ul>
+                                </div>
+
+                                <div class="advanced-tip">
+                                    <h5>🚀 Advanced Tip:</h5>
+                                    <p>For multiple conditions, use nested IF or SWITCH function:</p>
+                                    <pre><code class="language-dax">SWITCH(
+    TRUE(),
+    [Total Sales] > 2000000, "Very High",
+    [Total Sales] > 1000000, "High",
+    [Total Sales] > 500000, "Medium",
+    "Low"
+)</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="challenge" data-challenge="5" data-module="basics">
+                            <div class="challenge-header">
+                                <div class="challenge-number">5</div>
+                                <div class="challenge-info">
+                                    <h3>Text Functions</h3>
+                                    <p>Work with text in DAX</p>
+                                </div>
+                                <div class="challenge-points">+75 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Create a formatted text measure showing sales with currency symbol.</p>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">Sales Text = 
+"Total Sales: $" & 
+FORMAT(
+    SUM(Sales[Sales Amount]),
+    "#,##0"
+)</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>&</code> - Concatenation operator to join text</li>
+                                        <li><code>FORMAT()</code> - Formats numbers as text</li>
+                                        <li><code>"#,##0"</code> - Number format with thousands separator</li>
+                                        <li>Results in text like "Total Sales: $1,234,567"</li>
+                                    </ul>
+                                </div>
+
+                                <div class="success-box" id="basicsSuccess" style="display: none;">
+                                    <i class="fas fa-trophy"></i>
+                                    <strong>🎉 Congratulations!</strong> You've mastered DAX basics and earned the DAX Apprentice badge!
+                                </div>
+
+                                <div class="next-module-hint">
+                                    <h5>🚀 Ready for More?</h5>
+                                    <p>You've mastered the fundamentals! Ready to tackle aggregation functions?</p>
+                                    <button class="btn btn-primary" onclick="switchModule('aggregation')">
+                                        Go to Aggregation Module →
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Aggregation Module -->
+                <section id="aggregation" class="module">
+                    <div class="module-header">
+                        <h2>🧮 Aggregation Mastery</h2>
+                        <p>Master advanced aggregation functions and calculations</p>
+                        <div class="module-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="aggregationProgress"></div>
+                            </div>
+                            <span id="aggregationStatus">0/4 Challenges Complete</span>
+                        </div>
+                    </div>
+
+                    <div class="challenges-container">
+                        <div class="challenge" data-challenge="1" data-module="aggregation">
+                            <div class="challenge-header">
+                                <div class="challenge-number">1</div>
+                                <div class="challenge-info">
+                                    <h3>SUMX Function</h3>
+                                    <p>Row-by-row calculations</p>
+                                </div>
+                                <div class="challenge-points">+100 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Calculate total revenue by multiplying quantity × unit price for each row.</p>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">Total Revenue = 
+SUMX(
+    Sales,
+    Sales[Quantity] * Sales[Unit Price]
+)</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>SUMX()</code> - Iterator function that evaluates expression for each row</li>
+                                        <li>First parameter: table to iterate over</li>
+                                        <li>Second parameter: expression to evaluate per row</li>
+                                        <li>Sums up all the row-level calculations</li>
+                                    </ul>
+                                </div>
+
+                                <div class="comparison-box">
+                                    <h5>🔄 SUM vs SUMX:</h5>
+                                    <div class="comparison-grid">
+                                        <div class="comparison-item">
+                                            <strong>SUM()</strong><br>
+                                            Aggregates existing column<br>
+                                            <code>SUM(Sales[Amount])</code>
+                                        </div>
+                                        <div class="comparison-item">
+                                            <strong>SUMX()</strong><br>
+                                            Calculates then aggregates<br>
+                                            <code>SUMX(Sales, [Qty] * [Price])</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="challenge" data-challenge="2" data-module="aggregation">
+                            <div class="challenge-header">
+                                <div class="challenge-number">2</div>
+                                <div class="challenge-info">
+                                    <h3>COUNTROWS Function</h3>
+                                    <p>Count table rows</p>
+                                </div>
+                                <div class="challenge-points">+75 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Count the number of sales transactions.</p>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">Transaction Count = COUNTROWS(Sales)</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>COUNTROWS()</code> - Counts the number of rows in a table</li>
+                                        <li>More reliable than COUNT() for row counting</li>
+                                        <li>Always returns a number (never blank)</li>
+                                    </ul>
+                                </div>
+
+                                <div class="practice-exercise">
+                                    <h5>🎮 Try These Variations:</h5>
+                                    <ul>
+                                        <li><code>DISTINCTCOUNT(Sales[Customer ID])</code> - Unique customers</li>
+                                        <li><code>COUNTA(Sales[Product])</code> - Non-blank products</li>
+                                        <li><code>COUNTBLANK(Sales[Discount])</code> - Blank discounts</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="challenge" data-challenge="3" data-module="aggregation">
+                            <div class="challenge-header">
+                                <div class="challenge-number">3</div>
+                                <div class="challenge-info">
+                                    <h3>AVERAGEX Function</h3>
+                                    <p>Row-by-row averages</p>
+                                </div>
+                                <div class="challenge-points">+100 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Calculate average profit margin per transaction.</p>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">Avg Profit Margin = 
+AVERAGEX(
+    Sales,
+    DIVIDE(
+        Sales[Profit],
+        Sales[Sales Amount]
+    )
+)</code></pre>
+                                    </div>
+                                </div>
+<div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>AVERAGEX()</code> - Calculates average of an expression for each row</li>
+                                        <li>Nested <code>DIVIDE()</code> calculates profit margin per row</li>
+                                        <li>Then averages all the individual profit margins</li>
+                                        <li>Different from AVERAGE(profit)/AVERAGE(sales)!</li>
+                                    </ul>
+                                </div>
+
+                                <div class="important-note">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    <strong>Key Concept:</strong> AVERAGEX gives you the average of calculated values per row, not the average of aggregated totals.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="challenge" data-challenge="4" data-module="aggregation">
+                            <div class="challenge-header">
+                                <div class="challenge-number">4</div>
+                                <div class="challenge-info">
+                                    <h3>Statistical Functions</h3>
+                                    <p>MEDIAN, PERCENTILE functions</p>
+                                </div>
+                                <div class="challenge-points">+125 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Create measures for median sales and 90th percentile.</p>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">Median Sales = 
+MEDIAN(Sales[Sales Amount])
+
+Sales 90th Percentile = 
+PERCENTILE.INC(Sales[Sales Amount], 0.9)</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>MEDIAN()</code> - Returns the middle value when sorted</li>
+                                        <li><code>PERCENTILE.INC()</code> - Returns value at specified percentile</li>
+                                        <li><code>0.9</code> represents 90th percentile (90% of values are below this)</li>
+                                        <li>Great for understanding data distribution</li>
+                                    </ul>
+                                </div>
+
+                                <div class="success-box" id="aggregationSuccess" style="display: none;">
+                                    <i class="fas fa-trophy"></i>
+                                    <strong>🎉 Excellent!</strong> You've mastered aggregation functions and earned the Calculation Master badge!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Filtering Module -->
+                <section id="filtering" class="module">
+                    <div class="module-header">
+                        <h2>🔍 Filtering Mastery</h2>
+                        <p>Master context manipulation and filtering functions</p>
+                        <div class="module-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="filteringProgress"></div>
+                            </div>
+                            <span id="filteringStatus">0/5 Challenges Complete</span>
+                        </div>
+                    </div>
+
+                    <div class="challenges-container">
+                        <div class="challenge" data-challenge="1" data-module="filtering">
+                            <div class="challenge-header">
+                                <div class="challenge-number">1</div>
+                                <div class="challenge-info">
+                                    <h3>CALCULATE Function</h3>
+                                    <p>Modify filter context</p>
+                                </div>
+                                <div class="challenge-points">+150 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Calculate sales for a specific product category only.</p>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">Electronics Sales = 
+CALCULATE(
+    SUM(Sales[Sales Amount]),
+    Products[Category] = "Electronics"
+)</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>CALCULATE()</code> - Most important DAX function!</li>
+                                        <li>First parameter: expression to calculate</li>
+                                        <li>Remaining parameters: filters to apply</li>
+                                        <li>Modifies the filter context for the calculation</li>
+                                    </ul>
+                                </div>
+
+                                <div class="context-explanation">
+                                    <h5>🧠 Understanding Context:</h5>
+                                    <p><strong>Filter Context:</strong> The set of filters currently applied to your data. CALCULATE lets you modify this context temporarily for a specific calculation.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="challenge" data-challenge="2" data-module="filtering">
+                            <div class="challenge-header">
+                                <div class="challenge-number">2</div>
+                                <div class="challenge-info">
+                                    <h3>FILTER Function</h3>
+                                    <p>Create custom filter conditions</p>
+                                </div>
+                                <div class="challenge-points">+150 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Calculate sales for high-value transactions (> $1000).</p>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">High Value Sales = 
+CALCULATE(
+    SUM(Sales[Sales Amount]),
+    FILTER(
+        Sales,
+        Sales[Sales Amount] > 1000
+    )
+)</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>FILTER()</code> - Returns a filtered table</li>
+                                        <li>First parameter: table to filter</li>
+                                        <li>Second parameter: condition for each row</li>
+                                        <li>Used inside CALCULATE to apply complex filters</li>
+                                    </ul>
+                                </div>
+
+                                <div class="advanced-example">
+                                    <h5>🚀 Advanced Example:</h5>
+                                    <pre><code class="language-dax">Complex Filter = 
+CALCULATE(
+    [Total Sales],
+    FILTER(
+        Sales,
+        Sales[Sales Amount] > 1000 && 
+        Sales[Quantity] < 10
+    )
+)</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="challenge" data-challenge="3" data-module="filtering">
+                            <div class="challenge-header">
+                                <div class="challenge-number">3</div>
+                                <div class="challenge-info">
+                                    <h3>ALL Function</h3>
+                                    <p>Remove filters for totals</p>
+                                </div>
+                                <div class="challenge-points">+150 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Calculate percentage of total sales (ignoring current filters).</p>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">Percent of Total = 
+DIVIDE(
+    SUM(Sales[Sales Amount]),
+    CALCULATE(
+        SUM(Sales[Sales Amount]),
+        ALL(Sales)
+    )
+) * 100</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>ALL()</code> - Removes all filters from specified table/column</li>
+                                        <li>Numerator: current context sales</li>
+                                        <li>Denominator: total sales (all filters removed)</li>
+                                        <li>Perfect for percentage calculations</li>
+                                    </ul>
+                                </div>
+
+                                <div class="all-variations">
+                                    <h5>🎯 ALL Variations:</h5>
+                                    <ul>
+                                        <li><code>ALL(Sales)</code> - Remove all filters from Sales table</li>
+                                        <li><code>ALL(Sales[Product])</code> - Remove filters from Product column only</li>
+                                        <li><code>ALLEXCEPT(Sales, Sales[Year])</code> - Remove all filters except Year</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="challenge" data-challenge="4" data-module="filtering">
+                            <div class="challenge-header">
+                                <div class="challenge-number">4</div>
+                                <div class="challenge-info">
+                                    <h3>Multiple Conditions</h3>
+                                    <p>Complex filtering scenarios</p>
+                                </div>
+                                <div class="challenge-points">+175 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Calculate sales for Electronics OR Clothing categories in 2023.</p>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">Electronics or Clothing 2023 = 
+CALCULATE(
+    SUM(Sales[Sales Amount]),
+    YEAR(Sales[Date]) = 2023,
+    OR(
+        Products[Category] = "Electronics",
+        Products[Category] = "Clothing"
+    )
+)</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>OR()</code> - Logical OR operator for multiple conditions</li>
+                                        <li><code>YEAR()</code> - Extracts year from date</li>
+                                        <li>Multiple filters are combined with AND logic by default</li>
+                                        <li>OR() creates alternative conditions</li>
+                                    </ul>
+                                </div>
+
+                                <div class="logical-operators">
+                                    <h5>🧮 Logical Operators:</h5>
+                                    <ul>
+                                        <li><code>AND(condition1, condition2)</code> - Both must be true</li>
+                                        <li><code>OR(condition1, condition2)</code> - Either can be true</li>
+                                        <li><code>NOT(condition)</code> - Opposite of condition</li>
+                                        <li><code>&&</code> and <code>||</code> - Alternative syntax</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="challenge" data-challenge="5" data-module="filtering">
+                            <div class="challenge-header">
+                                <div class="challenge-number">5</div>
+                                <div class="challenge-info">
+                                    <h3>KEEPFILTERS Function</h3>
+                                    <p>Preserve existing filters</p>
+                                </div>
+                                <div class="challenge-points">+175 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Calculate sales with an additional filter while keeping existing ones.</p>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">High Value Current Context = 
+CALCULATE(
+    SUM(Sales[Sales Amount]),
+    KEEPFILTERS(Sales[Sales Amount] > 1000)
+)</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>KEEPFILTERS()</code> - Adds filter without replacing existing ones</li>
+                                        <li>Regular CALCULATE filters replace existing context</li>
+                                        <li>KEEPFILTERS preserves and adds to current context</li>
+                                        <li>Useful for additive filtering scenarios</li>
+                                    </ul>
+                                </div>
+
+                                <div class="success-box" id="filteringSuccess" style="display: none;">
+                                    <i class="fas fa-trophy"></i>
+                                    <strong>🎉 Outstanding!</strong> You've mastered filtering and earned the Filter Ninja badge!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Time Intelligence Module -->
+                <section id="time-intelligence" class="module">
+                    <div class="module-header">
+                        <h2>⏰ Time Intelligence Mastery</h2>
+                        <p>Master time-based calculations and comparisons</p>
+                        <div class="module-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="timeProgress"></div>
+                            </div>
+                            <span id="timeStatus">0/4 Challenges Complete</span>
+                        </div>
+                    </div>
+
+                    <div class="challenges-container">
+                        <div class="challenge" data-challenge="1" data-module="time">
+                            <div class="challenge-header">
+                                <div class="challenge-number">1</div>
+                                <div class="challenge-info">
+                                    <h3>Year-to-Date (YTD)</h3>
+                                    <p>Calculate YTD totals</p>
+                                </div>
+                                <div class="challenge-points">+200 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Create a measure that shows year-to-date sales total.</p>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">Sales YTD = 
+TOTALYTD(
+    SUM(Sales[Sales Amount]),
+    DateTable[Date]
+)</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>TOTALYTD()</code> - Year-to-date calculation function</li>
+                                        <li>First parameter: expression to aggregate</li>
+                                        <li>Second parameter: date column from date table</li>
+                                        <li>Requires a proper date table with continuous dates</li>
+                                    </ul>
+                                </div>
+
+                                <div class="date-table-tip">
+                                    <h5>📅 Date Table Requirements:</h5>
+                                    <ul>
+                                        <li>Continuous date range (no gaps)</li>
+                                        <li>Marked as date table in Power BI</li>
+                                        <li>Related to your fact tables</li>
+                                        <li>Contains all dates in your data period</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="challenge" data-challenge="2" data-module="time">
+                            <div class="challenge-header">
+                                <div class="challenge-number">2</div>
+                                <div class="challenge-info">
+                                    <h3>Previous Year Comparison</h3>
+                                    <p>Compare with same period last year</p>
+                                </div>
+                                <div class="challenge-points">+200 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Create measures for previous year sales and growth percentage.</p>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">Sales Previous Year = 
+CALCULATE(
+    SUM(Sales[Sales Amount]),
+    SAMEPERIODLASTYEAR(DateTable[Date])
+)
+
+YoY Growth % = 
+VAR CurrentYear = SUM(Sales[Sales Amount])
+VAR PreviousYear = [Sales Previous Year]
+RETURN
+DIVIDE(
+    CurrentYear - PreviousYear,
+    PreviousYear
+) * 100</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>SAMEPERIODLASTYEAR()</code> - Shifts date context back one year</li>
+                                        <li><code>VAR...RETURN</code> - Creates variables for cleaner code</li>
+                                        <li>Variables are calculated once and reused</li>
+                                        <li>Growth calculation: (Current - Previous) / Previous</li>
+                                    </ul>
+                                </div>
+
+                                <div class="var-explanation">
+                                    <h5>🔧 VAR Benefits:</h5>
+                                    <ul>
+                                        <li>Improves performance (calculated once)</li>
+                                        <li>Makes code more readable</li>
+                                        <li>Easier to debug and maintain</li>
+                                        <li>Can store any DAX expression</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="challenge" data-challenge="3" data-module="time">
+                            <div class="challenge-header">
+                                <div class="challenge-number">3</div>
+                                <div class="challenge-info">
+                                    <h3>Rolling Average</h3>
+                                    <p>Calculate moving averages</p>
+                                </div>
+                                <div class="challenge-points">+225 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Create a 3-month rolling average of sales.</p>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">3 Month Rolling Avg = 
+VAR LastDate = MAX(DateTable[Date])
+VAR DateRange = 
+    DATESINPERIOD(
+        DateTable[Date],
+        LastDate,
+        -3,
+        MONTH
+    )
+RETURN
+AVERAGEX(
+    DateRange,
+    CALCULATE(SUM(Sales[Sales Amount]))
+)</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>DATESINPERIOD()</code> - Creates a period of dates</li>
+                                        <li><code>-3, MONTH</code> - 3 months back from reference date</li>
+                                        <li><code>AVERAGEX()</code> - Averages the expression over the date range</li>
+                                        <li>Rolling averages smooth out fluctuations</li>
+                                    </ul>
+                                </div>
+
+                                <div class="time-functions">
+                                    <h5>⏰ Time Functions:</h5>
+                                    <ul>
+                                        <li><code>DATESINPERIOD()</code> - Period of dates</li>
+                                        <li><code>DATESBETWEEN()</code> - Range between two dates</li>
+                                        <li><code>DATESMTD()</code> - Month-to-date dates</li>
+                                        <li><code>DATESQTD()</code> - Quarter-to-date dates</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="challenge" data-challenge="4" data-module="time">
+                            <div class="challenge-header">
+                                <div class="challenge-number">4</div>
+                                <div class="challenge-info">
+                                    <h3>Period Comparison</h3>
+                                    <p>Advanced time comparisons</p>
+                                </div>
+                                <div class="challenge-points">+225 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Create a measure that compares current quarter with previous quarter.</p>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">QoQ Growth = 
+VAR CurrentQ = 
+    TOTALQTD(
+        SUM(Sales[Sales Amount]),
+        DateTable[Date]
+    )
+VAR PreviousQ = 
+    CALCULATE(
+        TOTALQTD(
+            SUM(Sales[Sales Amount]),
+            DateTable[Date]
+        ),
+        DATEADD(DateTable[Date], -1, QUARTER)
+    )
+RETURN
+DIVIDE(CurrentQ - PreviousQ, PreviousQ) * 100</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>TOTALQTD()</code> - Quarter-to-date total</li>
+                                        <li><code>DATEADD()</code> - Shifts dates by specified intervals</li>
+                                        <li><code>-1, QUARTER</code> - Move back one quarter</li>
+                                        <li>Complex time intelligence made simple with DAX</li>
+                                    </ul>
+                                </div>
+
+                                <div class="success-box" id="timeSuccess" style="display: none;">
+                                    <i class="fas fa-trophy"></i>
+                                    <strong>🎉 Incredible!</strong> You've mastered time intelligence and earned the Time Wizard badge!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Relationships Module -->
+                <section id="relationships" class="module">
+                    <div class="module-header">
+                        <h2>🔗 Relationships Mastery</h2>
+                        <p>Master cross-table calculations and relationships</p>
+                        <div class="module-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="relationshipsProgress"></div>
+                            </div>
+                            <span id="relationshipsStatus">0/3 Challenges Complete</span>
+                        </div>
+                    </div>
+
+                    <div class="challenges-container">
+                        <div class="challenge" data-challenge="1" data-module="relationships">
+                            <div class="challenge-header">
+                                <div class="challenge-number">1</div>
+                                <div class="challenge-info">
+                                    <h3>RELATED Function</h3>
+                                    <p>Get related table values</p>
+                                </div>
+                                <div class="challenge-points">+150 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Calculate total sales by product category using RELATED.</p>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">Sales by Category = 
+SUMX(
+    Sales,
+    Sales[Sales Amount] * 
+    IF(RELATED(Products[Category]) = "Electronics", 1, 0)
+)</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>RELATED()</code> - Gets value from related table</li>
+                                        <li>Follows many-to-one relationships</li>
+                                        <li>Can only go "up" the relationship chain</li>
+                                        <li>Perfect for bringing dimension attributes to fact tables</li>
+                                    </ul>
+                                </div>
+
+                                <div class="relationship-direction">
+                                    <h5>🔄 Relationship Direction:</h5>
+                                    <ul>
+                                        <li><strong>RELATED()</strong> - Many to One (Sales → Products)</li>
+                                        <li><strong>RELATEDTABLE()</strong> - One to Many (Products → Sales)</li>
+                                        <li>Direction matters for which function to use</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="challenge" data-challenge="2" data-module="relationships">
+                            <div class="challenge-header">
+                                <div class="challenge-number">2</div>
+                                <div class="challenge-info">
+                                    <h3>RELATEDTABLE Function</h3>
+                                    <p>Aggregate related table data</p>
+                                </div>
+                                <div class="challenge-points">+175 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Count number of sales transactions per product.</p>
+                                </div>
+
+                                <div class="code
+<div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">Transactions per Product = 
+COUNTROWS(RELATEDTABLE(Sales))</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>RELATEDTABLE()</code> - Returns related table rows</li>
+                                        <li>Goes from one-side to many-side of relationship</li>
+                                        <li><code>COUNTROWS()</code> counts the returned rows</li>
+                                        <li>Perfect for aggregating fact table data from dimension context</li>
+                                    </ul>
+                                </div>
+
+                                <div class="advanced-example">
+                                    <h5>🚀 Advanced Example:</h5>
+                                    <pre><code class="language-dax">Product Revenue = 
+SUMX(
+    RELATEDTABLE(Sales),
+    Sales[Quantity] * Sales[Unit Price]
+)</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="challenge" data-challenge="3" data-module="relationships">
+                            <div class="challenge-header">
+                                <div class="challenge-number">3</div>
+                                <div class="challenge-info">
+                                    <h3>Cross-Filter Direction</h3>
+                                    <p>Handle bidirectional relationships</p>
+                                </div>
+                                <div class="challenge-points">+200 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Calculate sales for customers who bought specific products using CROSSFILTER.</p>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">Electronics Customers Sales = 
+CALCULATE(
+    SUM(Sales[Sales Amount]),
+    CROSSFILTER(Sales[ProductID], Products[ProductID], BOTH),
+    Products[Category] = "Electronics"
+)</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>CROSSFILTER()</code> - Temporarily changes filter direction</li>
+                                        <li><code>BOTH</code> - Enables bidirectional filtering</li>
+                                        <li>Useful for many-to-many scenarios</li>
+                                        <li>Use sparingly as it can impact performance</li>
+                                    </ul>
+                                </div>
+
+                                <div class="success-box" id="relationshipsSuccess" style="display: none;">
+                                    <i class="fas fa-trophy"></i>
+                                    <strong>🎉 Excellent!</strong> You've mastered relationships and earned the Relationship Expert badge!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Advanced DAX Module -->
+                <section id="advanced" class="module">
+                    <div class="module-header">
+                        <h2>🚀 Advanced DAX Mastery</h2>
+                        <p>Master complex patterns and optimization techniques</p>
+                        <div class="module-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="advancedProgress"></div>
+                            </div>
+                            <span id="advancedStatus">0/4 Challenges Complete</span>
+                        </div>
+                    </div>
+
+                    <div class="challenges-container">
+                        <div class="challenge" data-challenge="1" data-module="advanced">
+                            <div class="challenge-header">
+                                <div class="challenge-number">1</div>
+                                <div class="challenge-info">
+                                    <h3>RANKX Function</h3>
+                                    <p>Rank and top N calculations</p>
+                                </div>
+                                <div class="challenge-points">+250 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Create a ranking of products by sales performance.</p>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">Product Sales Rank = 
+RANKX(
+    ALL(Products[Product Name]),
+    CALCULATE(SUM(Sales[Sales Amount])),
+    ,
+    DESC
+)</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>RANKX()</code> - Ranks items based on expression</li>
+                                        <li><code>ALL()</code> - Removes filters to rank against all products</li>
+                                        <li><code>DESC</code> - Descending order (highest sales = rank 1)</li>
+                                        <li>Empty third parameter uses default tie-breaking</li>
+                                    </ul>
+                                </div>
+
+                                <div class="ranking-variations">
+                                    <h5>📊 Ranking Variations:</h5>
+                                    <ul>
+                                        <li><code>TOPN()</code> - Returns top N rows</li>
+                                        <li><code>RANKX(..., ASC)</code> - Ascending ranking</li>
+                                        <li><code>RANKX(..., DENSE)</code> - Dense ranking (no gaps)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="challenge" data-challenge="2" data-module="advanced">
+                            <div class="challenge-header">
+                                <div class="challenge-number">2</div>
+                                <div class="challenge-info">
+                                    <h3>SWITCH Function</h3>
+                                    <p>Complex conditional logic</p>
+                                </div>
+                                <div class="challenge-points">+200 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Create a performance category based on sales ranges using SWITCH.</p>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">Performance Category = 
+VAR TotalSales = SUM(Sales[Sales Amount])
+RETURN
+SWITCH(
+    TRUE(),
+    TotalSales >= 2000000, "Excellent",
+    TotalSales >= 1000000, "Good", 
+    TotalSales >= 500000, "Average",
+    TotalSales >= 100000, "Below Average",
+    "Poor"
+)</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>SWITCH(TRUE(), ...)</code> - Pattern for multiple conditions</li>
+                                        <li>Each condition returns TRUE/FALSE</li>
+                                        <li>First TRUE condition determines result</li>
+                                        <li>Last parameter is default value</li>
+                                    </ul>
+                                </div>
+
+                                <div class="switch-patterns">
+                                    <h5>🔄 SWITCH Patterns:</h5>
+                                    <ul>
+                                        <li><code>SWITCH(value, match1, result1, match2, result2, default)</code></li>
+                                        <li><code>SWITCH(TRUE(), condition1, result1, condition2, result2, default)</code></li>
+                                        <li>More readable than nested IF statements</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="challenge" data-challenge="3" data-module="advanced">
+                            <div class="challenge-header">
+                                <div class="challenge-number">3</div>
+                                <div class="challenge-info">
+                                    <h3>SUMMARIZE Function</h3>
+                                    <p>Create summary tables</p>
+                                </div>
+                                <div class="challenge-points">+275 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Create a summary table of sales by category and region.</p>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">Category Region Summary = 
+SUMX(
+    SUMMARIZE(
+        Sales,
+        Products[Category],
+        Customers[Region],
+        "Total Sales", SUM(Sales[Sales Amount]),
+        "Avg Sale", AVERAGE(Sales[Sales Amount])
+    ),
+    [Total Sales]
+)</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>SUMMARIZE()</code> - Creates a summary table</li>
+                                        <li>Groups by specified columns</li>
+                                        <li>Can add calculated columns to the summary</li>
+                                        <li>Returns a table that can be used in other functions</li>
+                                    </ul>
+                                </div>
+
+                                <div class="summarize-alternatives">
+                                    <h5>🔄 Modern Alternatives:</h5>
+                                    <ul>
+                                        <li><code>SUMMARIZECOLUMNS()</code> - More efficient</li>
+                                        <li><code>ADDCOLUMNS()</code> - Add calculated columns</li>
+                                        <li><code>GROUPBY()</code> - Group with aggregations</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="challenge" data-challenge="4" data-module="advanced">
+                            <div class="challenge-header">
+                                <div class="challenge-number">4</div>
+                                <div class="challenge-info">
+                                    <h3>Error Handling</h3>
+                                    <p>Robust DAX with error handling</p>
+                                </div>
+                                <div class="challenge-points">+300 pts</div>
+                                <button class="complete-btn" onclick="completeChallenge(this)">
+                                    Mark Complete
+                                </button>
+                            </div>
+                            <div class="challenge-content">
+                                <div class="challenge-description">
+                                    <h4>🎯 Your Mission:</h4>
+                                    <p>Create a robust measure with comprehensive error handling.</p>
+                                </div>
+
+                                <div class="code-section">
+                                    <h5>💻 DAX Code to Write:</h5>
+                                    <div class="code-container">
+                                        <button class="copy-btn" onclick="copyCode(this)">
+                                            <i class="fas fa-copy"></i> Copy
+                                        </button>
+                                        <pre><code class="language-dax">Robust Growth Rate = 
+VAR CurrentSales = SUM(Sales[Sales Amount])
+VAR PreviousSales = 
+    CALCULATE(
+        SUM(Sales[Sales Amount]),
+        SAMEPERIODLASTYEAR(DateTable[Date])
+    )
+VAR GrowthRate = 
+    IF(
+        AND(
+            NOT(ISBLANK(CurrentSales)),
+            NOT(ISBLANK(PreviousSales)),
+            PreviousSales <> 0
+        ),
+        DIVIDE(CurrentSales - PreviousSales, PreviousSales) * 100,
+        BLANK()
+    )
+RETURN
+IF(
+    ISERROR(GrowthRate),
+    BLANK(),
+    GrowthRate
+)</code></pre>
+                                    </div>
+                                </div>
+
+                                <div class="explanation">
+                                    <h5>🔍 Code Explanation:</h5>
+                                    <ul>
+                                        <li><code>ISBLANK()</code> - Checks for blank values</li>
+                                        <li><code>ISERROR()</code> - Detects calculation errors</li>
+                                        <li><code>AND()</code> - Multiple condition checking</li>
+                                        <li>Returns BLANK() instead of errors for clean visuals</li>
+                                    </ul>
+                                </div>
+
+                                <div class="error-functions">
+                                    <h5>🛡️ Error Handling Functions:</h5>
+                                    <ul>
+                                        <li><code>IFERROR(expression, value_if_error)</code></li>
+                                        <li><code>ISBLANK()</code>, <code>ISEMPTY()</code></li>
+                                        <li><code>ISERROR()</code>, <code>ISLOGICAL()</code></li>
+                                        <li><code>COALESCE()</code> - Returns first non-blank</li>
+                                    </ul>
+                                </div>
+
+                                <div class="final-celebration" id="finalCelebration" style="display: none;">
+                                    <div class="celebration-content">
+                                        <h3>🏆 DAX GRANDMASTER ACHIEVED! 🏆</h3>
+                                        <p>You've mastered all DAX concepts and earned every badge!</p>
+                                        <div class="final-stats">
+                                            <div class="stat-item">
+                                                <i class="fas fa-code"></i>
+                                                <span id="finalLines">0</span> Lines of DAX Coded
+                                            </div>
+                                            <div class="stat-item">
+                                                <i class="fas fa-star"></i>
+                                                <span id="finalPointsDisplay">0</span> Total Points
+                                            </div>
+                                            <div class="stat-item">
+                                                <i class="fas fa-trophy"></i>
+                                                <span>6/6 Badges Earned</span>
+                                            </div>
+                                        </div>
+                                        <div class="mastery-skills">
+                                            <h4>🎯 You've Mastered:</h4>
+                                            <div class="skills-mastered">
+                                                <span>✅ DAX Fundamentals</span>
+                                                <span>✅ Aggregation Functions</span>
+                                                <span>✅ Context Manipulation</span>
+                                                <span>✅ Time Intelligence</span>
+                                                <span>✅ Table Relationships</span>
+                                                <span>✅ Advanced Patterns</span>
+                                            </div>
+                                        </div>
+                                        <button id="downloadCertificate" class="btn btn-certificate-large" onclick="generateCertificate()">
+                                            <i class="fas fa-download"></i>
+                                            Download Your DAX Master Certificate
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="success-box" id="advancedSuccess" style="display: none;">
+                                    <i class="fas fa-trophy"></i>
+                                    <strong>🎉 Incredible!</strong> You've earned the DAX Grandmaster badge and completed the entire quest!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
         </main>
+
+        <!-- Certificate Modal -->
+        <div id="certificateModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close" onclick="closeCertificateModal()">&times;</span>
+                <div class="certificate" id="certificate">
+                    <div class="certificate-header">
+                        <h1>🏆 CERTIFICATE OF MASTERY 🏆</h1>
+                        <div class="certificate-subtitle">DAX Programming Excellence</div>
+                    </div>
+                    <div class="certificate-body">
+                        <p class="certificate-text">This is to certify that</p>
+                        <h2 class="certificate-name" id="certificateName">[Your Name]</h2>
+                        <p class="certificate-text">has successfully completed the</p>
+                        <h3 class="certificate-course">DAX Mastery Quest</h3>
+                        <p class="certificate-text">and has demonstrated advanced proficiency in:</p>
+                        <div class="skills-grid">
+                            <div class="skill">✅ DAX Syntax and Fundamentals</div>
+                            <div class="skill">✅ Advanced Aggregation Functions</div>
+                            <div class="skill">✅ Context Manipulation and Filtering</div>
+                            <div class="skill">✅ Time Intelligence Calculations</div>
+                            <div class="skill">✅ Table Relationships and Navigation</div>
+                            <div class="skill">✅ Complex DAX Patterns and Optimization</div>
+                        </div>
+                        <div class="achievement-stats">
+                            <div class="achievement-stat">
+                                <strong>Total Challenges Completed:</strong> <span id="certChallenges">25</span>
+                            </div>
+                            <div class="achievement-stat">
+                                <strong>Lines of DAX Coded:</strong> <span id="certLines">0</span>
+                            </div>
+                            <div class="achievement-stat">
+                                <strong>Final Score:</strong> <span id="certScore">0</span> Points
+                            </div>
+                        </div>
+                        <div class="certificate-footer">
+                            <div class="certificate-date">
+                                <p>Date of Completion</p>
+                                <p id="certificateDate">[Date]</p>
+                            </div>
+                            <div class="certificate-level">
+                                <p>Mastery Level</p>
+                                <p><strong>DAX GRANDMASTER</strong></p>
+                            </div>
+                        </div>
+                        <div class="certificate-signature">
+                            <p>DAX Mastery Quest Certification Program</p>
+                            <div class="signature-line"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="certificate-actions">
+                    <button onclick="downloadCertificateAsPDF()" class="btn btn-primary">
+                        <i class="fas fa-file-pdf"></i> Download PDF
+                    </button>
+                    <button onclick="downloadCertificateAsImage()" class="btn btn-secondary">
+                        <i class="fas fa-image"></i> Download Image
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>
