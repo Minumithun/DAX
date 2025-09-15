@@ -1,0 +1,6 @@
+Customer_ID,Customer_Name,Region,Segment
+1001,John Doe,North,Corporate
+1002,Jane Smith,South,Consumer
+1003,Bob Johnson,East,Home Office
+1004,Alice Brown,West,Corporate
+1005,Charlie Wilson,North,Consumer
