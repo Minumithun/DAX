@@ -1,0 +1,11 @@
+Product,Category,ProductID,Cost
+Laptop,Electronics,1,900
+Mouse,Electronics,2,15
+Desk,Furniture,3,600
+Chair,Furniture,4,240
+Keyboard,Electronics,5,50
+Monitor,Electronics,6,350
+Pen,Office,7,1
+Notebook,Office,8,3
+Headphones,Electronics,9,100
+Tablet,Electronics,10,420
